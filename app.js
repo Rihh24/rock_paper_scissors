@@ -1,47 +1,54 @@
-function getHumanChoice(){
-    const input = prompt("Choose Rock, Paper or Scissors");
-    return input.trim();
-}
+let humanScore = 0;
+let computerScore = 0;
+
+const humanScoreDisplay = document.querySelector("#humanScoreDisplay")
+const computerScoreDisplay = document.querySelector("#computerScoreDisplay")
+
 
 function getComputerChoice(){
     const choice = Math.floor(Math.random()*3);
-    if(choice === 0) return "Rock";
-    if(choice === 1) return "Paper";
-    return "Scissors"
+    if(choice === 0) return "rock";
+    if(choice === 1) return "paper";
+    return "scissors"
 }
 
+function playRound(humanChoice, computerChoice){
+    console.log(`You chose ${humanChoice} computer chose ${computerChoice}`)
+    if(humanChoice === computerChoice){
+        console.log("Its a tie")
+    } else if(
+        (humanChoice === "rock" && computerChoice === "scissors") ||
+        (humanChoice === "paper" && computerChoice === "rock") ||
+        (humanChoice === "scissors" && computerChoice === "paper")
+    ){
+        console.log("You win the round!") 
+        humanScore++;
+        humanScoreDisplay.textContent = humanScore
+    }else{
+        console.log("Computer wins the round")
+        computerScore ++;
+        computerScoreDisplay.textContent = computerScore;
+    }
+    console.log(`Human Score: ${humanScore}\nComputer Score: ${computerScore}`)
+}
 
-
-
-function playGame(){
-    let humanScore = 0;
-    let computerScore = 0;
-
-    function playRound(humanChoice, computerChoice){
-        humanChoice = humanChoice.toLowerCase();
-        computerChoice = computerChoice.toLowerCase();
-        if(humanChoice === computerChoice){
-            console.log("Its a tie")
-        } else if(
-            (humanChoice === "rock" && computerChoice === "scissors") ||
-            (humanChoice === "paper" && computerChoice === "rock") ||
-            (humanChoice === "scissors" && computerChocie === "paper")
-        ){
-            console.log("You win the round!")
-            humanScore++;
-        }else{
-            console.log("Computer wins the round")
-            computerScore ++;
+const buttons = document.querySelectorAll("button");
+buttons.forEach(button =>{
+    button.addEventListener("click", ()=>{
+        const humanChoice = button.value.toLowerCase();
+        const computerChoice = getComputerChoice()
+        playRound(humanChoice, computerChoice)
+        if(humanScore + computerScore === 7){
+            endGame();
         }
-        console.log(`Human Score: ${humanScore}\nComputer Score: ${computerScore}`)
-    }
-    for(let i = 1; i <= 5; i++){
-        console.log(`---Round ${i}----`)
-        const human = getHumanChoice();
-        const computer = getComputerChoice();
-        playRound(human, computer)
-    }
+    })
+})
 
+
+
+
+
+function endGame(){
     console.log("\n--- Game Over ---")
     if(humanScore > computerScore){
         console.log("YOU BEAT THE DUMB BOT")
@@ -53,4 +60,10 @@ function playGame(){
     
 }
 
-playGame()
+
+// for(let i = 1; i <= 5; i++){
+//     console.log(`---Round ${i}----`)
+//     const human = getHumanChoice();
+//     const computer = getComputerChoice();
+//     playRound(human, computer)
+// }
